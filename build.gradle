@@ -1,0 +1,130 @@
+buildscript {
+    repositories {
+        maven { url "https://repo.grails.org/grails/core" }
+    }
+    dependencies {
+        classpath "org.grails:grails-gradle-plugin:$grailsVersion"
+    }
+}
+
+version "1.0.0-SNAPSHOT"
+group "au.org.ala.plugins"
+
+apply plugin:"eclipse"
+apply plugin:"idea"
+apply plugin:"org.grails.grails-plugin"
+apply plugin:"org.grails.grails-gsp"
+apply plugin: 'maven-publish'
+
+repositories {
+    maven { url "https://repo.grails.org/grails/core" }
+}
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+dependencies {
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    compile "org.springframework.boot:spring-boot-starter-logging"
+    compile "org.springframework.boot:spring-boot-autoconfigure"
+    compile "org.grails:grails-core"
+    compile "org.springframework.boot:spring-boot-starter-actuator"
+    compile "org.springframework.boot:spring-boot-starter-tomcat"
+    compile "org.grails:grails-web-boot"
+    compile "org.grails:grails-logging"
+    compile "org.grails:grails-plugin-rest"
+    compile "org.grails:grails-plugin-databinding"
+    compile "org.grails:grails-plugin-i18n"
+    compile "org.grails:grails-plugin-services"
+    compile "org.grails:grails-plugin-url-mappings"
+    compile "org.grails:grails-plugin-interceptors"
+    compile "org.grails.plugins:cache"
+    compile "org.grails.plugins:async"
+    compile "org.grails.plugins:scaffolding"
+    compile "org.grails.plugins:gsp"
+    compileOnly "io.micronaut:micronaut-inject-groovy"
+    console "org.grails:grails-console"
+    profile "org.grails.profiles:web-plugin"
+    testCompile "io.micronaut:micronaut-inject-groovy"
+    testCompile "org.grails:grails-gorm-testing-support"
+    testCompile "org.mockito:mockito-core"
+    testCompile "org.grails:grails-web-testing-support"
+
+    compile("io.swagger.core.v3:swagger-core:2.1.12")
+    compile("io.swagger.core.v3:swagger-annotations:2.1.12")
+    compile("io.swagger.core.v3:swagger-models:2.1.12")
+    compile("io.swagger.core.v3:swagger-integration:2.1.12")
+    compile('io.swagger.core.v3:swagger-jaxrs2:2.1.12')
+    compile 'javax.ws.rs:javax.ws.rs-api:2.1.1'
+
+    compile 'org.webjars:swagger-ui:4.5.0'
+}
+
+bootRun {
+    ignoreExitValue true
+    jvmArgs(
+        '-Dspring.output.ansi.enabled=always', 
+        '-noverify', 
+        '-XX:TieredStopAtLevel=1',
+        '-Xmx1024m')
+    sourceResources sourceSets.main
+    String springProfilesActive = 'spring.profiles.active'
+    systemProperty springProfilesActive, System.getProperty(springProfilesActive)
+}
+
+tasks.withType(GroovyCompile) {
+    configure(groovyOptions) {
+        forkOptions.jvmArgs = ['-Xmx1024m']
+    }
+}
+// enable if you wish to package this plugin as a standalone application
+bootJar.enabled = false
+
+publishing {
+    repositories {
+        maven {
+            name 'Nexus'
+            url "https://nexus.ala.org.au/content/repositories/${project.version.endsWith('-SNAPSHOT') ? 'snapshots' : 'releases' }"
+            credentials {
+                username = System.getenv('TRAVIS_DEPLOY_USERNAME')
+                password = System.getenv('TRAVIS_DEPLOY_PASSWORD')
+            }
+        }
+    }
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+
+            pom {
+                name = 'OpenAPI Plugin'
+                description = 'OpenAPI support for ALA Apps'
+                url = 'https://github.com/AtlasOfLivingAustralia/openapi-plugin'
+                licenses {
+                    license {
+                        name = 'MPL-1.1'
+                        url = 'https://www.mozilla.org/en-US/MPL/1.1/'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'sbearcsiro'
+                        name = 'Simon Bear'
+                        email = 'simon.bear@csiro.au'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/AtlasOfLivingAustralia/openapi-plugin.git'
+                    developerConnection = 'scm:git:ssh://github.com:AtlasOfLivingAustralia/openapi-plugin.git'
+                    url = 'https://github.com/AtlasOfLivingAustralia/openapi-plugin/tree/main'
+                }
+            }
+
+        }
+    }
+}
