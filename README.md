@@ -1,4 +1,4 @@
-#OpenAPI Plugin for Grails
+# OpenAPI Plugin for Grails
 
 This is a pre-release plugin for adding OpenAPI documentation to APIs.
 
