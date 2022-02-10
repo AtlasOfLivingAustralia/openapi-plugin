@@ -11,8 +11,4 @@ class OpenApiServiceSpec extends Specification implements ServiceUnitTest<OpenAp
     def cleanup() {
     }
 
-    void "test something"() {
-        expect:"fix me"
-            true == false
-    }
 }
