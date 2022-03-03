@@ -1,6 +1,6 @@
 package au.org.ala.plugins.openapi
 
-class UrlMappings {
+class OpenApiUrlMappings {
 
     static mappings = {
         "/openapi/$action?/$id?(.$format)?"(controller: "openApi")

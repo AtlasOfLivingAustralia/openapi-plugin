@@ -10,11 +10,11 @@ class OpenApiController {
 
     OpenApiService openApiService
 
-    @Value("classpath*:**/webjars/swagger-ui/**/index.html")
-    Resource[] swaggerUiResources
+//    @Value("classpath*:**/webjars/swagger-ui/**/index.html")
+//    Resource[] swaggerUiResources
 
     def index() {
-        redirect uri: "/webjars/swagger-ui${getSwaggerUiFile()}?url=${g.createLink(controller: 'openApi', action: 'openapi')}"
+//        redirect uri: "/webjars/swagger-ui${getSwaggerUiFile()}?url=${g.createLink(controller: 'openApi', action: 'openapi', format: 'json')}"
     }
 
     def openapi() {
@@ -26,12 +26,12 @@ class OpenApiController {
         }
     }
 
-    protected String getSwaggerUiFile() {
-        try {
-            (swaggerUiResources.getAt(0) as Resource).getURI().toString().split("/webjars/swagger-ui")[1]
-        } catch (Exception e) {
-            throw new Exception("Unable to find swagger ui.. Please make sure that you have added swagger ui dependency eg:-\n compile 'org.webjars:swagger-ui:4.5.0' \nin your build.gradle file", e)
-        }
-    }
+//    protected String getSwaggerUiFile() {
+//        try {
+//            (swaggerUiResources.getAt(0) as Resource).getURI().toString().split("/webjars/swagger-ui")[1]
+//        } catch (Exception e) {
+//            throw new Exception("Unable to find swagger ui.. Please make sure that you have added swagger ui dependency eg:-\n compile 'org.webjars:swagger-ui:4.5.0' \nin your build.gradle file", e)
+//        }
+//    }
 
 }
