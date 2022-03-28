@@ -33,8 +33,8 @@
 <body>
 <div id="swagger-ui"></div>
 
-<asset:javascript src="webjars/swagger-ui/4.5.0/swagger-ui-bundle.js" charset="UTF-8" />
-<asset:javascript src="webjars/swagger-ui/4.5.0/swagger-ui-standalone-preset.js" charset="UTF-8" />
+<asset:javascript src="webjars/swagger-ui/4.5.2/swagger-ui-bundle.js" charset="UTF-8" />
+<asset:javascript src="webjars/swagger-ui/4.5.2/swagger-ui-standalone-preset.js" charset="UTF-8" />
 <script>
     window.onload = function() {
         // Begin Swagger UI call region

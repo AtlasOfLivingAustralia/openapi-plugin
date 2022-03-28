@@ -15,6 +15,10 @@ import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Contact
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.info.License
+import io.swagger.v3.oas.models.security.OAuthFlow
+import io.swagger.v3.oas.models.security.OAuthFlows
+import io.swagger.v3.oas.models.security.Scopes
+import io.swagger.v3.oas.models.security.SecurityScheme
 import io.swagger.v3.oas.models.servers.Server
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -49,6 +53,77 @@ class OpenApiService {
         oas.info(info)
         oas.addServersItem(new Server()
                 .url(grailsApplication.config.getProperty("grails.serverURL")))
+
+        if (grailsApplication.config.getProperty('security.oidc.enabled', Boolean, false)) {
+            SecurityScheme oidcScheme = new SecurityScheme()
+                    .type(SecurityScheme.Type.OPENIDCONNECT)
+                    .name('openIdConnect')
+                    .openIdConnectUrl(grailsApplication.config.getProperty('security.oidc.discoveryUri'))
+            SecurityScheme oauthScheme = new SecurityScheme()
+                    .type(SecurityScheme.Type.OAUTH2)
+                    .flows.tap {
+                        def scopes = new Scopes().tap {scopes ->
+                            grailsApplication.config.getProperty('openapi.components.security.oauth2.scopes', Map, [:]).each { scope ->
+                                scopes.addString(scope.key, scope.value)
+                            }
+                        }
+                        it.clientCredentials(
+                                new OAuthFlow()
+                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
+                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
+                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
+                                        .scopes(scopes)
+                        )
+                        it.password(
+                                new OAuthFlow()
+                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
+                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
+                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
+                                        .scopes(scopes)
+                        )
+                        it.implicit(
+                                new OAuthFlow()
+                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
+                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
+                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
+                                        .scopes(scopes)
+                        )
+                        it.authorizationCode(
+                                new OAuthFlow()
+                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
+                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
+                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
+                                        .scopes(scopes)
+                        )
+                    }
+
+            oas.components.addSecuritySchemes('openIdConnect', oidcScheme)
+            oas.components.addSecuritySchemes('oauth', oauthScheme)
+
+        }
+        if (grailsApplication.config.getProperty('security.cas.enabled', Boolean, false)) {
+            SecurityScheme sessionCookieScheme = new SecurityScheme()
+                .type(SecurityScheme.Type.APIKEY)
+                .in(SecurityScheme.In.COOKIE)
+                .name('jsessionid')
+            oas.components.addSecuritySchemes('sessionCookie', sessionCookieScheme)
+        }
+        if (grailsApplication.config.getProperty('security.jwt.enabled', Boolean, false)) {
+            SecurityScheme jwtScheme = new SecurityScheme()
+                    .type(SecurityScheme.Type.HTTP)
+                    .bearerFormat('JWT')
+
+            oas.components.addSecuritySchemes('jwt', jwtScheme)
+        }
+        if (grailsApplication.config.getProperty('security.jwt.fallbackToLegacy', Boolean, false)) {
+            SecurityScheme apiKeyScheme = new SecurityScheme()
+                    .type(SecurityScheme.Type.APIKEY)
+                    .in(SecurityScheme.In.HEADER)
+                    .name(grailsApplication.config.getProperty('security.apikey.header.override') ?: 'apiKey')
+
+            oas.components.addSecuritySchemes('apikey', apiKeyScheme)
+        }
+
         SwaggerConfiguration oasConfig = new SwaggerConfiguration()
                 .openAPI(oas)
                 .prettyPrint(true)

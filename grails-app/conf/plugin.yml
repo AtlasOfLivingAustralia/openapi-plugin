@@ -1,0 +1,8 @@
+openapi:
+  components:
+    security:
+      oauth2:
+        baseUrl: 'https://auth.ala.org.au/cas/oidc/'
+        authorizationUrl: "${openapi.components.security.oauth2.baseUrl}/authorize"
+        refreshUrl: "${openapi.components.security.oauth2.baseUrl}/refresh"
+        tokenUrl: "${openapi.components.security.oauth2.baseUrl}/token"

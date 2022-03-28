@@ -19,5 +19,5 @@ import static java.lang.annotation.RetentionPolicy.*
 @Target(value=[TYPE,METHOD])
 @Retention(value=RUNTIME)
 @interface Path {
-    String value = ''
+    String value() default ''
 }

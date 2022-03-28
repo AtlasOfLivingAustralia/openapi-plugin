@@ -18,6 +18,7 @@ apply plugin: 'maven-publish'
 
 repositories {
     maven { url "https://repo.grails.org/grails/core" }
+    mavenCentral()
 }
 
 configurations {
@@ -54,14 +55,14 @@ dependencies {
     testCompile "org.mockito:mockito-core"
     testCompile "org.grails:grails-web-testing-support"
 
-    compile("io.swagger.core.v3:swagger-core:2.1.12")
-    compile("io.swagger.core.v3:swagger-annotations:2.1.12")
-    compile("io.swagger.core.v3:swagger-models:2.1.12")
-    compile("io.swagger.core.v3:swagger-integration:2.1.12")
-    compile('io.swagger.core.v3:swagger-jaxrs2:2.1.12')
+    compile('io.swagger.core.v3:swagger-core:2.1.13')
+    compile('io.swagger.core.v3:swagger-annotations:2.1.13')
+    compile('io.swagger.core.v3:swagger-models:2.1.13')
+    compile('io.swagger.core.v3:swagger-integration:2.1.13')
+    compile('io.swagger.core.v3:swagger-jaxrs2:2.1.13')
     compile 'javax.ws.rs:javax.ws.rs-api:2.1.1'
 
-    compile 'org.webjars:swagger-ui:4.5.0'
+    compile 'org.webjars:swagger-ui:4.5.2'
 }
 
 bootRun {
