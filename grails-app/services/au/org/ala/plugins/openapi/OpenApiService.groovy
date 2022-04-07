@@ -63,7 +63,7 @@ class OpenApiService {
                     .type(SecurityScheme.Type.OAUTH2)
                     .flows.tap {
                         def scopes = new Scopes().tap {scopes ->
-                            grailsApplication.config.getProperty('openapi.components.security.oauth2.scopes', Map, [:]).each { scope ->
+                            grails.util.Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.scopes', Map, [:]).each { scope ->
                                 scopes.addString(scope.key, scope.value)
                             }
                         }
