@@ -62,7 +62,7 @@ class OpenApiService {
                     .openIdConnectUrl(grailsApplication.config.getProperty('security.oidc.discoveryUri'))
             SecurityScheme oauthScheme = new SecurityScheme()
                     .type(SecurityScheme.Type.OAUTH2)
-                    .flows.tap {
+                    .flows(new OAuthFlows().tap {
                         def scopes = new Scopes().tap {scopes ->
                             Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.scopes', Map, [:]).each { scope ->
                                 scopes.addString(scope.key, scope.value)
@@ -96,7 +96,7 @@ class OpenApiService {
                                         .refreshUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
                                         .scopes(scopes)
                         )
-                    }
+                    })
 
             oas.components.addSecuritySchemes('openIdConnect', oidcScheme)
             oas.components.addSecuritySchemes('oauth', oauthScheme)
