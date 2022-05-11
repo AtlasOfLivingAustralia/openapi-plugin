@@ -1,13 +1,10 @@
 package au.org.ala.plugins.openapi
 
 import grails.core.GrailsApplication
-import grails.util.Holders
 import grails.web.mapping.LinkGenerator
 import io.swagger.v3.core.converter.ModelConverters
 import io.swagger.v3.core.util.Json
 import io.swagger.v3.core.util.Yaml
-import io.swagger.v3.jaxrs2.integration.JaxrsOpenApiContextBuilder
-import io.swagger.v3.jaxrs2.integration.ServletOpenApiContextBuilder
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.integration.GenericOpenApiContextBuilder
 import io.swagger.v3.oas.integration.OpenApiConfigurationException
@@ -63,37 +60,36 @@ class OpenApiService {
             SecurityScheme oauthScheme = new SecurityScheme()
                     .type(SecurityScheme.Type.OAUTH2)
                     .flows(new OAuthFlows().tap {
-                        def scopes = new Scopes().tap {scopes ->
-                            Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.scopes', Map, [:]).each { scope ->
-                                scopes.addString(scope.key, scope.value)
-                            }
+                        def scopes = new Scopes()
+                        grailsApplication.config.getProperty('openapi.components.security.oauth2.scopes', Map, [:]).each { scope ->
+                            scopes.addString(scope.key, scope.value)
                         }
                         it.clientCredentials(
                                 new OAuthFlow()
-                                        .authorizationUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
-                                        .tokenUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
-                                        .refreshUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
+                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
+                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
+                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
                                         .scopes(scopes)
                         )
                         it.password(
                                 new OAuthFlow()
-                                        .authorizationUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
-                                        .tokenUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
-                                        .refreshUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
+                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
+                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
+                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
                                         .scopes(scopes)
                         )
                         it.implicit(
                                 new OAuthFlow()
-                                        .authorizationUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
-                                        .tokenUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
-                                        .refreshUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
+                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
+                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
+                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
                                         .scopes(scopes)
                         )
                         it.authorizationCode(
                                 new OAuthFlow()
-                                        .authorizationUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
-                                        .tokenUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
-                                        .refreshUrl(Holders.grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
+                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
+                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
+                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
                                         .scopes(scopes)
                         )
                     })
@@ -152,7 +148,7 @@ class OpenApiService {
                     .buildContext(true)
 
             def reader = new GrailsOpenApiReader()
-            reader.grailsApplication = grailsApplication
+            reader.grailsApplication = this.grailsApplication
             reader.linkGenerator = linkGenerator
             reader.configuration = oasConfig
 
