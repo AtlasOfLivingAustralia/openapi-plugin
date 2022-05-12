@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Swagger UI</title>
-    <asset:stylesheet src="webjars/swagger-ui/4.5.0/swagger-ui.css" />
-    <asset:link rel="icon" href="webjars/swagger-ui/4.5.0/favicon-16x16.png" sizes="32x32" />
-    <asset:link rel="icon" href="webjars/swagger-ui/4.5.0/favicon-32x32.png" sizes="16x16" />
+    <asset:stylesheet src="webjars/swagger-ui/4.5.2/swagger-ui.css" />
+    <asset:link rel="icon" href="webjars/swagger-ui/4.5.2/favicon-32x32.png" sizes="32x32" />
+    <asset:link rel="icon" href="webjars/swagger-ui/4.5.2/favicon-16x16.png" sizes="16x16" />
     <style>
     html
     {

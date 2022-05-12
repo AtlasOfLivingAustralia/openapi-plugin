@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.integration.GenericOpenApiContextBuilder
 import io.swagger.v3.oas.integration.OpenApiConfigurationException
 import io.swagger.v3.oas.integration.SwaggerConfiguration
+import io.swagger.v3.oas.models.Components
 import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Contact
 import io.swagger.v3.oas.models.info.Info
@@ -51,6 +52,8 @@ class OpenApiService {
         oas.info(info)
         oas.addServersItem(new Server()
                 .url(grailsApplication.config.getProperty("grails.serverURL")))
+
+        oas.setComponents(new Components())
 
         if (grailsApplication.config.getProperty('security.oidc.enabled', Boolean, false)) {
             SecurityScheme oidcScheme = new SecurityScheme()
