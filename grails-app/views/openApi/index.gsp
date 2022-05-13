@@ -39,7 +39,7 @@
     window.onload = function() {
         // Begin Swagger UI call region
         const ui = SwaggerUIBundle({
-            url: "${g.createLink(controller: 'openApi', action: 'openapi', format: 'json')}",
+            url: "${g.createLink(mapping: "openapiDoc", format: 'json')}",
             dom_id: '#swagger-ui',
             deepLinking: true,
             presets: [
