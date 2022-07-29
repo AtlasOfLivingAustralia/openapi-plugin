@@ -56,50 +56,66 @@ class OpenApiService {
         oas.setComponents(new Components())
 
         if (grailsApplication.config.getProperty('security.oidc.enabled', Boolean, false)) {
+            def discoveryUri = grailsApplication.config.getProperty('security.oidc.discovery-uri') ?: grailsApplication.config.getProperty('security.oidc.discoveryUri')
             SecurityScheme oidcScheme = new SecurityScheme()
                     .type(SecurityScheme.Type.OPENIDCONNECT)
                     .name('openIdConnect')
-                    .openIdConnectUrl(grailsApplication.config.getProperty('security.oidc.discoveryUri'))
-            SecurityScheme oauthScheme = new SecurityScheme()
-                    .type(SecurityScheme.Type.OAUTH2)
-                    .flows(new OAuthFlows().tap {
-                        def scopes = new Scopes()
-                        grailsApplication.config.getProperty('openapi.components.security.oauth2.scopes', Map, [:]).each { scope ->
-                            scopes.addString(scope.key, scope.value)
-                        }
-                        it.clientCredentials(
-                                new OAuthFlow()
-                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
-                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
-                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
-                                        .scopes(scopes)
-                        )
-                        it.password(
-                                new OAuthFlow()
-                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
-                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
-                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
-                                        .scopes(scopes)
-                        )
-                        it.implicit(
-                                new OAuthFlow()
-                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
-                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
-                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
-                                        .scopes(scopes)
-                        )
-                        it.authorizationCode(
-                                new OAuthFlow()
-                                        .authorizationUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl'))
-                                        .tokenUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl'))
-                                        .refreshUrl(grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl'))
-                                        .scopes(scopes)
-                        )
-                    })
+                    .openIdConnectUrl(discoveryUri)
 
             oas.components.addSecuritySchemes('openIdConnect', oidcScheme)
-            oas.components.addSecuritySchemes('oauth', oauthScheme)
 
+            // Allow client to disable separate oauth2 flow
+            if (grailsApplication.config.getProperty('openapi.components.security.oauth2.enabled', Boolean, true)) {
+
+                SecurityScheme oauthScheme = new SecurityScheme()
+                        .type(SecurityScheme.Type.OAUTH2)
+                        .flows(new OAuthFlows().tap {
+                            def scopes = new Scopes()
+                            def authzUrl = grailsApplication.config.getProperty('openapi.components.security.oauth2.authorizationUrl') ?: grailsApplication.config.getProperty('openapi.components.security.oauth2.authorization-url')
+                            def tokenUrl = grailsApplication.config.getProperty('openapi.components.security.oauth2.tokenUrl') ?: grailsApplication.config.getProperty('openapi.components.security.oauth2.token-url')
+                            def refreshUrl = grailsApplication.config.getProperty('openapi.components.security.oauth2.refreshUrl') ?: grailsApplication.config.getProperty('openapi.components.security.oauth2.refresh-url')
+                            grailsApplication.config.getProperty('openapi.components.security.oauth2.scopes', Map, [:]).each { scope ->
+                                scopes.addString(scope.key, scope.value)
+                            }
+                            if (grailsApplication.config.getProperty('openapi.components.security.oauth2.client-credentials-flow-enabled', Boolean, true)) {
+                                it.clientCredentials(
+                                        new OAuthFlow()
+                                                .authorizationUrl(authzUrl)
+                                                .tokenUrl(tokenUrl)
+                                                .refreshUrl(refreshUrl)
+                                                .scopes(scopes)
+                                )
+                            }
+                            if (grailsApplication.config.getProperty('openapi.components.security.oauth2.password-flow-enabled', Boolean, false)) {
+                                it.password(
+                                        new OAuthFlow()
+                                                .authorizationUrl(authzUrl)
+                                                .tokenUrl(tokenUrl)
+                                                .refreshUrl(refreshUrl)
+                                                .scopes(scopes)
+                                )
+                            }
+                            if (grailsApplication.config.getProperty('openapi.components.security.oauth2.implicit-flow-enabled', Boolean, false)) {
+                                it.implicit(
+                                        new OAuthFlow()
+                                                .authorizationUrl(authzUrl)
+                                                .tokenUrl(tokenUrl)
+                                                .refreshUrl(refreshUrl)
+                                                .scopes(scopes)
+                                )
+                            }
+                            if (grailsApplication.config.getProperty('openapi.components.security.oauth2.authcode-flow-enabled', Boolean, true)) {
+                                it.authorizationCode(
+                                        new OAuthFlow()
+                                                .authorizationUrl(authzUrl)
+                                                .tokenUrl(tokenUrl)
+                                                .refreshUrl(refreshUrl)
+                                                .scopes(scopes)
+                                )
+                            }
+                        })
+                oas.components.addSecuritySchemes('oauth', oauthScheme)
+            }
         }
         if (grailsApplication.config.getProperty('security.cas.enabled', Boolean, false)) {
             SecurityScheme sessionCookieScheme = new SecurityScheme()
