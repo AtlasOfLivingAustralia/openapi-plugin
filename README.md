@@ -26,6 +26,13 @@ openapi:
     url: https://www.mozilla.org/en-US/MPL/1.1/
   version: '@info.app.version@'
   cachetimeoutms: 0
+  components:
+    security:
+      oauth2:
+        scopes:
+          users/read: Read or list any or all user records
+          users/write: Write to a user's record, eg update a user's attributes.
+        baseUrl: https://auth.ala.org.au/cas/oidc
 ```
 
 `cachetimeoutms` defaults to indefinite caching (a value of -1).  It can be set to 0 to disable caching or using a positive value to set the cache timeout in MS.
