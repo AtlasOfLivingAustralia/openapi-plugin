@@ -74,6 +74,11 @@ annotations or similar, which means the `@Operation` doesn't need information ab
                         mediaType = "application/json",
                         schema = @Schema(implementation = GetUserDetailsFromIdListResponse)
                 )
+                ],
+                headers = [
+                        @Header(name = 'Access-Control-Allow-Headers', description = "CORS header", schema = @Schema(type = "String")),
+                        @Header(name = 'Access-Control-Allow-Methods', description = "CORS header", schema = @Schema(type = "String")),
+                        @Header(name = 'Access-Control-Allow-Origin', description = "CORS header", schema = @Schema(type = "String"))
                 ]
         )
         ]
