@@ -57,6 +57,9 @@ annotations or similar, which means the `@Operation` doesn't need information ab
         operationId = "getUserDetailsFromIdList",
         summary = "Get User Details by id list",
         description = "Get a list of user details for a list of user ids",
+        parameters = [
+                    @Parameter(name = "Authorization", in = HEADER, schema = @Schema(implementation = String), required = true)
+		    ],
         requestBody = @RequestBody(
                 description = "The list of user ids to request and whether to include extended properties",
                 required = true,
