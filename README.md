@@ -24,6 +24,8 @@ openapi:
   license:
     name: Mozilla Public License 1.1
     url: https://www.mozilla.org/en-US/MPL/1.1/
+  server-urls:
+    - ${grails.serverURL} # optional, defaults to grails.serverURL but an alternate list for the openapi servers component can be provided here instead
   version: '@info.app.version@'
   cachetimeoutms: 0
   components:
