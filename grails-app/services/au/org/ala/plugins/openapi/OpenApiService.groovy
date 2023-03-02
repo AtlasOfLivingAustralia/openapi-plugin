@@ -50,7 +50,7 @@ class OpenApiService {
                 .version(grailsApplication.config.getProperty("openapi.version"))
 
         oas.info(info)
-        def servers = grailsApplication.config.getProperty("openapi.server-urls", List<String>, [])
+        def servers = grailsApplication.config.getProperty("openapi.server-urls", List, [])
         if (!servers) servers = [grailsApplication.config.getProperty("grails.serverURL")]
         for (server in servers) {
             oas.addServersItem(new Server().url(server))
