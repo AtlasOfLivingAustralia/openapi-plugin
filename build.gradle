@@ -62,7 +62,7 @@ dependencies {
     compile('io.swagger.core.v3:swagger-jaxrs2:2.1.13')
     compile 'javax.ws.rs:javax.ws.rs-api:2.1.1'
 
-    compile 'org.webjars:swagger-ui:4.19.1'
+    compile 'org.webjars:swagger-ui:4.5.2'
 }
 
 bootRun {
