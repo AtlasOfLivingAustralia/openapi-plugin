@@ -24,8 +24,17 @@ openapi:
   license:
     name: Mozilla Public License 1.1
     url: https://www.mozilla.org/en-US/MPL/1.1/
+  server-urls:
+    - ${grails.serverURL} # optional, defaults to grails.serverURL but an alternate list for the openapi servers component can be provided here instead
   version: '@info.app.version@'
   cachetimeoutms: 0
+  components:
+    security:
+      oauth2:
+        scopes:
+          users/read: Read or list any or all user records
+          users/write: Write to a user's record, eg update a user's attributes.
+        baseUrl: https://auth.ala.org.au/cas/oidc
 ```
 
 `cachetimeoutms` defaults to indefinite caching (a value of -1).  It can be set to 0 to disable caching or using a positive value to set the cache timeout in MS.
@@ -67,6 +76,11 @@ annotations or similar, which means the `@Operation` doesn't need information ab
                         mediaType = "application/json",
                         schema = @Schema(implementation = GetUserDetailsFromIdListResponse)
                 )
+                ],
+                headers = [
+                        @Header(name = 'Access-Control-Allow-Headers', description = "CORS header", schema = @Schema(type = "String")),
+                        @Header(name = 'Access-Control-Allow-Methods', description = "CORS header", schema = @Schema(type = "String")),
+                        @Header(name = 'Access-Control-Allow-Origin', description = "CORS header", schema = @Schema(type = "String"))
                 ]
         )
         ]
