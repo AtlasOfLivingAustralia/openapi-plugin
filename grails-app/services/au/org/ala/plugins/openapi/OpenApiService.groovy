@@ -83,7 +83,6 @@ class OpenApiService {
                             if (grailsApplication.config.getProperty('openapi.components.security.oauth2.client-credentials-flow-enabled', Boolean, true)) {
                                 it.clientCredentials(
                                         new OAuthFlow()
-                                                .authorizationUrl(authzUrl)
                                                 .tokenUrl(tokenUrl)
                                                 .refreshUrl(refreshUrl)
                                                 .scopes(scopes)
@@ -131,6 +130,7 @@ class OpenApiService {
             SecurityScheme jwtScheme = new SecurityScheme()
                     .type(SecurityScheme.Type.HTTP)
                     .bearerFormat('JWT')
+                    .scheme('bearer')
 
             oas.components.addSecuritySchemes('jwt', jwtScheme)
         }
