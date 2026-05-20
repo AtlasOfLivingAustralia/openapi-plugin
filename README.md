@@ -7,9 +7,14 @@ on some existing JAX-RS API annotations, such as `@Path`, `@Produces` and `@Cons
 
 ## Using
 
-Add the plugin to your `build.gradle`:
+The lastest version is `2.0.0-SNAPSHOT`, which supports Grails 7.1.1
+Note: this ersion is not compatible with Grails 6.
 
-`compile 'au.org.ala.plugins:openapi:0.1.0-SNAPSHOT`
+Add the plugin to your `build.gradle`:
+`compile 'au.org.ala.plugins:openapi:2.0.0-SNAPSHOT`
+
+If you are using Grails 6, use version `1.0.0`
+`compile 'au.org.ala.plugins:openapi:1.0.0`
 
 Configure the static content using your `application.yml`.  An example is presented below:
 
