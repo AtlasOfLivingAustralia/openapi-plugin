@@ -197,17 +197,17 @@
 //    }
 //
 //    static String extractOperationMethod(Method method, Iterator<OpenAPIExtension> chain) {
-//        if (method.getAnnotation(javax.ws.rs.GET.class) != null) {
+//        if (method.getAnnotation(jakarta.ws.rs.GET.class) != null) {
 //            return GET_METHOD
-//        } else if (method.getAnnotation(javax.ws.rs.PUT.class) != null) {
+//        } else if (method.getAnnotation(jakarta.ws.rs.PUT.class) != null) {
 //            return PUT_METHOD
-//        } else if (method.getAnnotation(javax.ws.rs.POST.class) != null) {
+//        } else if (method.getAnnotation(jakarta.ws.rs.POST.class) != null) {
 //            return POST_METHOD
-//        } else if (method.getAnnotation(javax.ws.rs.DELETE.class) != null) {
+//        } else if (method.getAnnotation(jakarta.ws.rs.DELETE.class) != null) {
 //            return DELETE_METHOD
-//        } else if (method.getAnnotation(javax.ws.rs.OPTIONS.class) != null) {
+//        } else if (method.getAnnotation(jakarta.ws.rs.OPTIONS.class) != null) {
 //            return OPTIONS_METHOD
-//        } else if (method.getAnnotation(javax.ws.rs.HEAD.class) != null) {
+//        } else if (method.getAnnotation(jakarta.ws.rs.HEAD.class) != null) {
 //            return HEAD_METHOD
 //        } else if (method.getAnnotation(HttpMethod.class) != null) {
 //            HttpMethod httpMethod = method.getAnnotation(HttpMethod.class)

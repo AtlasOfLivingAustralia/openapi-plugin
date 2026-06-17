@@ -62,10 +62,10 @@ dependencies {
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.23'
     implementation 'io.swagger.core.v3:swagger-models:2.2.23'
     implementation 'io.swagger.core.v3:swagger-integration:2.2.23'
-    implementation 'io.swagger.core.v3:swagger-jaxrs2:2.2.23'
+    implementation("io.swagger.core.v3:swagger-jaxrs2-jakarta:2.2.23")
 
-    implementation 'javax.ws.rs:javax.ws.rs-api:2.1.1'
-    implementation 'org.webjars:swagger-ui:5.18.2'
+    implementation 'jakarta.ws.rs:jakarta.ws.rs-api:3.0.0'
+    implementation "org.webjars:swagger-ui:4.5.2"
 
     testImplementation "org.mockito:mockito-core"
     testImplementation "org.apache.grails:grails-testing-support-web"
