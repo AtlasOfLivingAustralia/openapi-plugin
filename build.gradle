@@ -17,6 +17,7 @@ plugins {
 version "2.0.0-SNAPSHOT"
 group "au.org.ala.plugins"
 
+
 apply plugin: "org.apache.grails.gradle.grails-plugin"
 apply plugin: "org.apache.grails.gradle.grails-gsp"
 apply plugin: "eclipse"
@@ -58,11 +59,11 @@ dependencies {
     implementation "org.springframework.boot:spring-boot-starter-tomcat"
 
     // Swagger (OK but should be consistent version-managed)
-    implementation 'io.swagger.core.v3:swagger-core:2.2.23'
-    implementation 'io.swagger.core.v3:swagger-annotations:2.2.23'
-    implementation 'io.swagger.core.v3:swagger-models:2.2.23'
-    implementation 'io.swagger.core.v3:swagger-integration:2.2.23'
-    implementation("io.swagger.core.v3:swagger-jaxrs2-jakarta:2.2.23")
+    implementation "io.swagger.core.v3:swagger-core:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-annotations:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-models:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-integration:${swaggerVersion}"
+    implementation "io.swagger.core.v3:swagger-jaxrs2-jakarta:${swaggerVersion}"
 
     implementation 'jakarta.ws.rs:jakarta.ws.rs-api:3.0.0'
     implementation "org.webjars:swagger-ui:4.5.2"
