@@ -2,14 +2,21 @@
 
 This is a pre-release plugin for adding OpenAPI documentation to APIs.
 
-This pre-release version is heavily based on the OpenAPI JAX-RS implementation.  Because of this it imports and relies
-on some existing JAX-RS API annotations, such as `@Path`, `@Produces` and `@Consumes`.  Eventually this plugin should provide alternatives for all these and drop the dependency on the JAX-RS API.
+This version is heavily based on the OpenAPI JAX-RS implementation.  
+Because of this it imports and relies on some existing JAX-RS API annotations, such as `@Path`, `@Produces` and `@Consumes`.  Eventually this plugin should provide alternatives for all these and drop the dependency on the JAX-RS API.
 
 ## Using
 
-Add the plugin to your `build.gradle`:
+The lastest version is `2.0.0-SNAPSHOT`, which supports Grails 7.1.1
+Note: this version is not compatible with Grails 6.
 
-`compile 'au.org.ala.plugins:openapi:0.1.0-SNAPSHOT`
+	
+
+Add the plugin to your `build.gradle`:
+`compile 'au.org.ala.plugins:openapi:2.0.0-SNAPSHOT`
+
+If you are using Grails 6, use version `1.0.0`
+`compile 'au.org.ala.plugins:openapi:1.0.0`
 
 Configure the static content using your `application.yml`.  An example is presented below:
 
