@@ -53,13 +53,10 @@ import io.swagger.v3.oas.models.security.SecurityScheme
 import io.swagger.v3.oas.models.tags.Tag
 import org.apache.commons.lang3.StringUtils
 
-import javax.ws.rs.Consumes
-import javax.ws.rs.Produces
 
-//import javax.ws.rs.ApplicationPath
-//import javax.ws.rs.Consumes
-//import javax.ws.rs.Produces
-//import javax.ws.rs.core.Application
+import jakarta.ws.rs.Consumes
+import jakarta.ws.rs.Produces
+
 import java.lang.annotation.Annotation
 import java.lang.reflect.Method
 import java.lang.reflect.ParameterizedType
@@ -270,7 +267,7 @@ class GrailsOpenApiReader implements OpenApiReader {
         Hidden hidden = cls.getAnnotation(Hidden.class)
         // class path
         final Path apiPath = ReflectionUtils.getAnnotation(cls, Path.class)
-        final javax.ws.rs.Path jaxRsApiPath = ReflectionUtils.getAnnotation(cls, javax.ws.rs.Path.class)
+        final jakarta.ws.rs.Path jaxRsApiPath = ReflectionUtils.getAnnotation(cls, jakarta.ws.rs.Path.class)
         // TODO Get Controller path
         def classLogicalName = GrailsNameUtils.getLogicalName(cls, 'Controller')
 
@@ -287,8 +284,8 @@ class GrailsOpenApiReader implements OpenApiReader {
         io.swagger.v3.oas.annotations.tags.Tag[] apiTags = ReflectionUtils.getRepeatableAnnotationsArray(cls, io.swagger.v3.oas.annotations.tags.Tag.class)
         io.swagger.v3.oas.annotations.servers.Server[] apiServers = ReflectionUtils.getRepeatableAnnotationsArray(cls, io.swagger.v3.oas.annotations.servers.Server.class)
 
-        javax.ws.rs.Consumes classConsumes = ReflectionUtils.getAnnotation(cls, javax.ws.rs.Consumes.class)
-        javax.ws.rs.Produces classProduces = ReflectionUtils.getAnnotation(cls, javax.ws.rs.Produces.class)
+        jakarta.ws.rs.Consumes classConsumes = ReflectionUtils.getAnnotation(cls, jakarta.ws.rs.Consumes.class)
+        jakarta.ws.rs.Produces classProduces = ReflectionUtils.getAnnotation(cls, jakarta.ws.rs.Produces.class)
         // TODO Read formats?
 //        def responsesFormats = cls.getField('responseFormats').get(null)
 
@@ -409,8 +406,8 @@ class GrailsOpenApiReader implements OpenApiReader {
                 continue
             }
             AnnotatedMethod annotatedMethod = bd.findMethod(method.getName(), method.getParameterTypes())
-            javax.ws.rs.Produces methodProduces = ReflectionUtils.getAnnotation(method, javax.ws.rs.Produces.class)
-            javax.ws.rs.Consumes methodConsumes = ReflectionUtils.getAnnotation(method, javax.ws.rs.Consumes.class)
+            jakarta.ws.rs.Produces methodProduces = ReflectionUtils.getAnnotation(method, jakarta.ws.rs.Produces.class)
+            jakarta.ws.rs.Consumes methodConsumes = ReflectionUtils.getAnnotation(method, jakarta.ws.rs.Consumes.class)
             // TODO Consume / Produces
 
             if (isMethodOverridden(method, cls)) {
@@ -421,7 +418,7 @@ class GrailsOpenApiReader implements OpenApiReader {
             boolean methodDeprecated = ReflectionUtils.getAnnotation(method, Deprecated.class) != null
 
             Path methodPath = ReflectionUtils.getAnnotation(method, Path)
-            javax.ws.rs.Path jaxRsMethodPath = ReflectionUtils.getAnnotation(method, javax.ws.rs.Path)
+            jakarta.ws.rs.Path jaxRsMethodPath = ReflectionUtils.getAnnotation(method, jakarta.ws.rs.Path)
 
             // TODO Test
             def linkGenPath = linkGenerator.link(controller: classLogicalName, action: method.name)
@@ -800,8 +797,8 @@ class GrailsOpenApiReader implements OpenApiReader {
                 encoding != null && !encoding.isEmpty()) {
             Content content = operation.getRequestBody().getContent()
             for (String mediaKey: content.keySet()) {
-                if (mediaKey.equals(javax.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED) ||
-                        mediaKey.equals(javax.ws.rs.core.MediaType.MULTIPART_FORM_DATA)) {
+                if (mediaKey.equals(jakarta.ws.rs.core.MediaType.APPLICATION_FORM_URLENCODED) ||
+                        mediaKey.equals(jakarta.ws.rs.core.MediaType.MULTIPART_FORM_DATA)) {
                     MediaType m = content.get(mediaKey)
                     m.encoding(encoding)
                 }
@@ -1171,7 +1168,7 @@ class GrailsOpenApiReader implements OpenApiReader {
             rawClassName = className.replace("[simple type, class ", "")
             rawClassName = rawClassName.substring(0, rawClassName.length() -1)
         }
-        ignore = rawClassName.startsWith("javax.ws.rs.")
+        ignore = rawClassName.startsWith("jakarta.ws.rs.")
         ignore = ignore || rawClassName.equalsIgnoreCase("void")
         ignore = ignore || ModelConverters.getInstance().isRegisteredAsSkippedClass(rawClassName)
         return ignore
@@ -1367,8 +1364,8 @@ class GrailsOpenApiReader implements OpenApiReader {
         return Optional.of(parametersObject)
     }
 
-    protected ResolvedParameter getParameters(Type type, List<Annotation> annotations, Operation operation, javax.ws.rs.Consumes classConsumes,
-                                              javax.ws.rs.Consumes methodConsumes, JsonView jsonViewAnnotation) {
+    protected ResolvedParameter getParameters(Type type, List<Annotation> annotations, Operation operation, jakarta.ws.rs.Consumes classConsumes,
+                                              jakarta.ws.rs.Consumes methodConsumes, JsonView jsonViewAnnotation) {
         final Iterator<OpenAPIExtension> chain = OpenAPIExtensions.chain()
         if (!chain.hasNext()) {
             return new ResolvedParameter()
@@ -1516,7 +1513,7 @@ class GrailsOpenApiReader implements OpenApiReader {
             type = rawType
         }
 
-        if (method.getAnnotation(javax.ws.rs.Path.class) != null) {
+        if (method.getAnnotation(jakarta.ws.rs.Path.class) != null) {
             if (ReaderUtils.extractOperationMethod(method, null) == null) {
                 return type
             }
